@@ -29,6 +29,55 @@ In this example, if you were to follow the strategy guide, you would get a total
 What would your total score be if everything goes exactly according to your strategy guide?
 */
 
+
+
+//console.log(lines) // lines is an array
+
+//console.log(lines[i][0])
+
+function rockPaperScissorsGame(arr){
+  // store the total and add to it for each type (rock, paper, scissors, and if you won or drew)
+  let subtotal = 0
+  for(let i = 0; i < arr.length; i++){
+    // OPP ROCK PERMUTATIONS
+  // rock and rock = draw rock(1) and draw(3) = 1 + 3 = 4
+  if(arr[i][0] === 'A' && arr[i][2] === 'X') subtotal += 4
+  // rock and paper = win; paper(2) and win(6) = 2 + 6 = 8
+  if(arr[i][0] === 'A' && arr[i][2] === 'Y') subtotal += 8
+  // rock and scissors = lose; scissors(3) and lose(0) = 3 + 0 = 3
+  if(arr[i][0] === 'A' && arr[i][2] === 'Z') subtotal += 3
+  
+  // OPP PAPER PERMUTATIONS
+  // paper and rock = lose rock(1) and lose(0) = 1 + 0 = 1
+  if(arr[i][0] === 'B' && arr[i][2] === 'X') subtotal += 1
+  // paper and paper = tie; paper(2) and draw(3) = 2 + 0 = 2
+  if(arr[i][0] === 'B' && arr[i][2] === 'Y') subtotal += 2
+  // paper and scissors = win; scissors(3) and win(6) = 3 + 6 = 9
+  if(arr[i][0] === 'B' && arr[i][2] === 'Z') subtotal += 9
+  
+  // OPP SCISSORS PERMUTATIONS
+  // scissors and rock = win rock(1) and win(6) = 1 + 6 = 7
+  if(arr[i][0] === 'C' && arr[i][2] === 'X') subtotal += 7
+  // scissors and paper = lose; paper(2) and lose(0) = 2 + 0 = 2
+  if(arr[i][0] === 'C' && arr[i][2] === 'Y') subtotal += 2
+  // scissors and scissors = draw; scissors(3) and draw(3) = 3 + 3 = 6
+  if(arr[i][0] === 'C' && arr[i][2] === 'Z') subtotal += 6
+  }
+  return subtotal
+}
+
 const input = fs.readFileSync('./input.txt', 'utf-8')
 
-console.log(input)
+const lines = input.split('\n')
+
+console.log(rockPaperScissorsGame(lines))
+
+/*
+1 for Rock      A,X
+2 for Paper     B,Y
+3 for Scissors  C,Z
+
+0 if you lost 
+3 if you draw 
+6 if you won
+*/
