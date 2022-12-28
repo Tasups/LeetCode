@@ -181,30 +181,60 @@ Find the item type that corresponds to the badges of each three-Elf group. What 
 
 function getElfGroupBadgeTotal (arr) {
   let total = 0
+  let elfHashmap0 = {}
+  let elfHashmap1 = {}
+  let elfHashmap2 = {}
+  //console.log(arr.length)
   // go through the entire input array and make smaller arrays to represent the group of elves
-  for (let i = 0; i < arr.length; i + 3) {
+  for (let i = 0; i < arr.length; i += 3) {
+    console.log(`************************************outer for loop ${i}`)
     let elfGroupArr = arr.slice(i, i + 3)
+    //console.log(elfGroupArr)
     // go through the elfGroup, an array of length 3, so that we can iterate through each string
     for (let j = 0; j < elfGroupArr.length; j++) {
+      console.log(`************************************middle for loop ${j}`)
       // initialize an empty hashmap
-      let elfHashmap = {}
+
       let elfBag = elfGroupArr[j]
       for(let k = 0; k < elfBag.length; k++) {
-        let char = elfBag[k]
-        if (!elfHashmap[char]) elfHashmap[char] = 1
-        if (elfHashmap[char]) elfHashmap[char] += 1
+        console.log(`************************************inner for loop ${k}`)
+        if(j === 0) {
+          let char = elfBag[k]
+          if (!elfHashmap0[char]) elfHashmap0[char] = 1
+          if (elfHashmap0[char]) elfHashmap0[char] += 1
+        }
+        if(j === 1) {
+          let char = elfBag[k]
+          if (!elfHashmap1[char]) elfHashmap1[char] = 1
+          if (elfHashmap1[char]) elfHashmap1[char] += 1
+        } 
+        if(j === 2) {
+          let char = elfBag[k]
+          if (!elfHashmap2[char]) elfHashmap2[char] = 1
+          if (elfHashmap2[char]) elfHashmap2[char] += 1
+        }
       }
-      console.log(elfHashmap)
-      let letter = Object.keys(elfHashmap).find(key => elfHashmap[key] === 3)
-      let letterValue = letter.charCodeAt(0)
-      if (letterValue >= 97) {
-        total += letterValue - 96
-      } 
-      if (letterValue <= 90) {
-        total += letterValue - 38
-      }
+      for(const property in elfHashmap0){
+          console.log(`Property in 0 is: ${property}`)
+          if(elfHashmap1.hasOwnProperty(property) && elfHashmap2.hasOwnProperty(property)) {
+            console.log(`Property in common is: ${property}`)
+            console.log('true')
+            let letter = property
+            let letterValue = letter.charCodeAt(0)
+            if (letterValue >= 97) {
+              total += letterValue - 96
+            } 
+            if (letterValue <= 90) {
+              total += letterValue - 38
+            }
+          }
+        }
     }
+    elfHashmap0 = {}
+    elfHashmap1 = {}
+    elfHashmap2 = {}
   }
+  console.log(total)
   return total
 }
 
@@ -215,6 +245,9 @@ let testArr = [
   "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn",
   "ttgJtRGJQctTZtZT",
   "CrZsJsPPZsGzwwsLwLmpwMDw",
+  // "dtddvvhwttHJhwdhJPddhwJGppmGjgpQgTjQplQpTljwpg",
+  // "BfzSzRSVVMVNRMDDNBSNSnfBmbrglGQbmNpQggFjpgpbQlQb",
+  // "ZSBffLnVZdCCPJjhhL"
   ]
   
-  console.log(getElfGroupBadgeTotal(testArr))
+ getElfGroupBadgeTotal(testArr)
