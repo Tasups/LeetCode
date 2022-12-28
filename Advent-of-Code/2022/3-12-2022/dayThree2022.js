@@ -187,17 +187,17 @@ function getElfGroupBadgeTotal (arr) {
   //console.log(arr.length)
   // go through the entire input array and make smaller arrays to represent the group of elves
   for (let i = 0; i < arr.length; i += 3) {
-    console.log(`************************************outer for loop ${i}`)
+    //console.log(`************************************outer for loop ${i}`)
     let elfGroupArr = arr.slice(i, i + 3)
     //console.log(elfGroupArr)
     // go through the elfGroup, an array of length 3, so that we can iterate through each string
     for (let j = 0; j < elfGroupArr.length; j++) {
-      console.log(`************************************middle for loop ${j}`)
+      //console.log(`************************************middle for loop ${j}`)
       // initialize an empty hashmap
 
       let elfBag = elfGroupArr[j]
       for(let k = 0; k < elfBag.length; k++) {
-        console.log(`************************************inner for loop ${k}`)
+        //console.log(`************************************inner for loop ${k}`)
         if(j === 0) {
           let char = elfBag[k]
           if (!elfHashmap0[char]) elfHashmap0[char] = 1
@@ -215,10 +215,10 @@ function getElfGroupBadgeTotal (arr) {
         }
       }
       for(const property in elfHashmap0){
-          console.log(`Property in 0 is: ${property}`)
+          //console.log(`Property in 0 is: ${property}`)
           if(elfHashmap1.hasOwnProperty(property) && elfHashmap2.hasOwnProperty(property)) {
-            console.log(`Property in common is: ${property}`)
-            console.log('true')
+            //console.log(`Property in common is: ${property}`)
+            //console.log('true')
             let letter = property
             let letterValue = letter.charCodeAt(0)
             if (letterValue >= 97) {
@@ -250,4 +250,5 @@ let testArr = [
   // "ZSBffLnVZdCCPJjhhL"
   ]
   
- getElfGroupBadgeTotal(testArr)
+ //getElfGroupBadgeTotal(testArr)
+ getElfGroupBadgeTotal(inputToArray)
