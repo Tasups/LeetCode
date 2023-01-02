@@ -180,24 +180,24 @@ Find the item type that corresponds to the badges of each three-Elf group. What 
 
 
 function getElfGroupBadgeTotal (arr) {
+  // store the total
   let total = 0
+  // initialize hash maps on the full functional scale
   let elfHashmap0 = {}
   let elfHashmap1 = {}
   let elfHashmap2 = {}
-  //console.log(arr.length)
   // go through the entire input array and make smaller arrays to represent the group of elves
   for (let i = 0; i < arr.length; i += 3) {
-    //console.log(`************************************outer for loop ${i}`)
+    // the elf group's packs represented as an array with a length of 3
     let elfGroupArr = arr.slice(i, i + 3)
-    //console.log(elfGroupArr)
     // go through the elfGroup, an array of length 3, so that we can iterate through each string
     for (let j = 0; j < elfGroupArr.length; j++) {
-      //console.log(`************************************middle for loop ${j}`)
-      // initialize an empty hashmap
-
+      // represent each elf's pack so that we can iterate through it and find the badge
       let elfBag = elfGroupArr[j]
       for(let k = 0; k < elfBag.length; k++) {
-        //console.log(`************************************inner for loop ${k}`)
+        // here we start adding to each hashmap or each elf's bag the keys of which will represent the
+        // letters in their pack/bag, and the values the number of times they come up. 0 is the first
+        // elf's bag, 1 the second and 2 the third. This is how computers count, don't blame me!
         if(j === 0) {
           let char = elfBag[k]
           if (!elfHashmap0[char]) elfHashmap0[char] = 1
@@ -214,22 +214,23 @@ function getElfGroupBadgeTotal (arr) {
           if (elfHashmap2[char]) elfHashmap2[char] += 1
         }
       }
+      // now, for each property, we see if the other elf's bags have the property(letter)
       for(const property in elfHashmap0){
-          //console.log(`Property in 0 is: ${property}`)
-          if(elfHashmap1.hasOwnProperty(property) && elfHashmap2.hasOwnProperty(property)) {
-            //console.log(`Property in common is: ${property}`)
-            //console.log('true')
-            let letter = property
-            let letterValue = letter.charCodeAt(0)
-            if (letterValue >= 97) {
-              total += letterValue - 96
-            } 
-            if (letterValue <= 90) {
-              total += letterValue - 38
-            }
+        // if they do, we then translate the value of each to the value assigned, we have to do this
+        // because the utf-16 is not the same as the one outlined in the exercise
+        if(elfHashmap1.hasOwnProperty(property) && elfHashmap2.hasOwnProperty(property)) {
+          let letter = property
+          let letterValue = letter.charCodeAt(0)
+          if (letterValue >= 97) {
+            total += letterValue - 96
+          } 
+          if (letterValue <= 90) {
+            total += letterValue - 38
           }
         }
+      }
     }
+    // we then have to reset the elf's bags to empty and restart the process
     elfHashmap0 = {}
     elfHashmap1 = {}
     elfHashmap2 = {}

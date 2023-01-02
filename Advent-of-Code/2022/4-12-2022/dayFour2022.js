@@ -39,7 +39,14 @@ This example list uses single-digit section IDs to make it easier to draw; your 
 Some of the pairs have noticed that one of their assignments fully contains the other. For example, 2-8 fully contains 3-7, and 6-6 is fully contained by 4-6. In pairs where one assignment fully contains the other, one Elf in the pair would be exclusively cleaning sections their partner will already be cleaning, so these seem like the most in need of reconsideration. In this example, there are 2 such pairs.
 
 In how many assignment pairs does one range fully contain the other?
+
+
+*****METHODOLOGY*****
+
+1. Translate the input into two arrays using 
 */
+
+
 
 const fs = require('fs')
 
@@ -47,7 +54,51 @@ const input = fs.readFileSync('./input.txt', 'utf-8')
 
 const inputToArray = input.split("\n")
 
-//const lines = input.split('\n') // this creates an array of strings
+const firstFiveOfInputArray = inputToArray.splice(0,5)
 
-console.log(inputToArray)
+// const lines = input.split('\n') // this creates an array of strings
 
+// console.log(firstFiveOfInputArray)
+
+/*
+
+20-45,13-44   ==> neither does NOT fully contain the other
+7-8,8-28      ==> neither does NOT fully contain the other
+3-39,14-97    ==> neither does NOT fully contain the other
+35-99,35-98   ==> the first FULLY contains the other
+18-49,17-19   ==> neither does NOT fully contain the other
+
+output of this input should equal '1'
+*/
+
+
+function assignmentOverlap (arr) {
+  
+  for (let i = 0; i < arr.length; i++) {
+    let groupAssignment = arr[i]
+    //console.log(groupAssignment)
+    let findComma = groupAssignment.indexOf(",")
+    //console.log(`idx of comma: ${findComma}`)
+    
+    let firstAssignment = groupAssignment.slice(0, findComma)
+    //console.log(`1st assignment: ${firstAssignment}`)
+    let findDash = firstAssignment.indexOf("-")
+    //console.log(`1st dash idx: ${findDash}`)
+    let firstAssignment1stElToArray = firstAssignment.slice(0, findDash)
+    console.log(`1st assignment El to array: ${firstAssignment1stElToArray}`)
+    let firstAssignment2ndElToArray = firstAssignment.slice(findDash + 1)
+    console.log(`2nd assignment El to array: ${firstAssignment2ndElToArray}`)
+    
+    
+    let secondAssignment = groupAssignment.slice(findComma + 1)
+    //console.log(`2nd assignment: ${secondAssignment}`)
+    let findDash2 = secondAssignment.indexOf("-")
+    //console.log(`2nd dash idx: ${findDash2}`)
+    let secondAssignment1stElToArray = secondAssignment.slice(0, findDash)
+    console.log(`2nd assignment El to array: ${secondAssignment1stElToArray}`)
+    let secondAssignment2ndElToArray = secondAssignment.slice(findDash2 + 1)
+    console.log(`1st assignment El to array: ${secondAssignment2ndElToArray}`)
+  }
+}
+
+assignmentOverlap(firstFiveOfInputArray)
