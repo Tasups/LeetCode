@@ -95,7 +95,7 @@ function assignmentOverlap (arr) {
     let findDash2 = secondAssignment.indexOf("-")
     //console.log(`2nd dash idx: ${findDash2}`)
     let secondAssignment1stElToArray = secondAssignment.slice(0, findDash)
-    console.log(`2nd assignment El to array: ${secondAssignment1stElToArray}`)
+    console.log(`2nd assignment El to array: ${typeof secondAssignment1stElToArray}`)
     let secondAssignment2ndElToArray = secondAssignment.slice(findDash2 + 1)
     console.log(`1st assignment El to array: ${secondAssignment2ndElToArray}`)
   }
