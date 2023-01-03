@@ -47,58 +47,62 @@ In how many assignment pairs does one range fully contain the other?
 */
 
 
-
+//**********************************
+// EXTRACTING DATA
 const fs = require('fs')
 
 const input = fs.readFileSync('./input.txt', 'utf-8')
 
 const inputToArray = input.split("\n")
-
-const firstFiveOfInputArray = inputToArray.splice(0,5)
-
-// const lines = input.split('\n') // this creates an array of strings
-
-// console.log(firstFiveOfInputArray)
-
-/*
-
-20-45,13-44   ==> neither does NOT fully contain the other
-7-8,8-28      ==> neither does NOT fully contain the other
-3-39,14-97    ==> neither does NOT fully contain the other
-35-99,35-98   ==> the first FULLY contains the other
-18-49,17-19   ==> neither does NOT fully contain the other
-
-output of this input should equal '1'
-*/
+//**********************************
 
 
 function assignmentOverlap (arr) {
+  let total = 0
   
   for (let i = 0; i < arr.length; i++) {
     let groupAssignment = arr[i]
-    //console.log(groupAssignment)
+    // find index of comma so as to separate the assignments
     let findComma = groupAssignment.indexOf(",")
-    //console.log(`idx of comma: ${findComma}`)
-    
+    // use comma location to separate 1st assignment from 2nd using slice
     let firstAssignment = groupAssignment.slice(0, findComma)
-    //console.log(`1st assignment: ${firstAssignment}`)
+    // use dash to separate 1st number in range from the 2nd
     let findDash = firstAssignment.indexOf("-")
-    //console.log(`1st dash idx: ${findDash}`)
-    let firstAssignment1stElToArray = firstAssignment.slice(0, findDash)
-    console.log(`1st assignment El to array: ${firstAssignment1stElToArray}`)
-    let firstAssignment2ndElToArray = firstAssignment.slice(findDash + 1)
-    console.log(`2nd assignment El to array: ${firstAssignment2ndElToArray}`)
-    
-    
+    // separation is made using slice
+    let firstAssign1stEl = firstAssignment.slice(0, findDash)
+    // turn the string into a number for later use
+    let firstAssign1stNum = parseInt(firstAssign1stEl)
+    // use dash to separate 2nd number in range from the first using slice
+    // we have to +1 due to the need to skip the dash, that isn't a part of a number
+    let firstAssign2ndEl = firstAssignment.slice(findDash + 1)
+    // turn it into a number using parseInt, no second arg needed for radix 10
+    let firstAssign2ndNum = parseInt(firstAssign2ndEl)
+    // separate using slice with the comma location to get 2nd assignment
     let secondAssignment = groupAssignment.slice(findComma + 1)
-    //console.log(`2nd assignment: ${secondAssignment}`)
+    // use dash to separate 1st number in range from the 2nd
     let findDash2 = secondAssignment.indexOf("-")
-    //console.log(`2nd dash idx: ${findDash2}`)
-    let secondAssignment1stElToArray = secondAssignment.slice(0, findDash)
-    console.log(`2nd assignment El to array: ${typeof secondAssignment1stElToArray}`)
-    let secondAssignment2ndElToArray = secondAssignment.slice(findDash2 + 1)
-    console.log(`1st assignment El to array: ${secondAssignment2ndElToArray}`)
+    // separate using slice for the 1st number in the range
+    let secondAssign1stEl = secondAssignment.slice(0, findDash2)
+    // turn it into a number
+    let secondAssign1stNum = parseInt(secondAssign1stEl)
+    // separate using slice for the 2nd number in the range
+    let secondAssign2ndEl = secondAssignment.slice(findDash2 + 1)
+    // turn it into a number
+    let secondAssign2ndNum = parseInt(secondAssign2ndEl)
+    
+    if(firstAssign1stNum <= secondAssign1stNum && firstAssign2ndNum >= secondAssign2ndNum) {
+      total += 1
+    }
+    
+    if(secondAssign1stNum <= firstAssign1stNum && secondAssign2ndNum >= firstAssign2ndNum) {
+      total += 1
+    }
   }
+  return total
 }
 
-assignmentOverlap(firstFiveOfInputArray)
+console.log(assignmentOverlap(inputToArray)) 
+
+//console.log(assignmentOverlap(firstFiveOfInputArray))
+
+// console.log(assignmentOverlap(inputToArray))
