@@ -29,3 +29,32 @@ function mergeSort(arr) {
   let right = mergeSort(arr.splice(mid))
   return merge(left, right)
 }
+
+
+
+function merge2 (arr1, arr2) {
+  let result = []
+  let i = 0
+  let j = 0
+  
+  while(i < arr1.length && j < arr2.length){
+    if(arr)
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
