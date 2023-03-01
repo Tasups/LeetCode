@@ -4,21 +4,19 @@
 
 function toPascalCase(str){
   let lowerCase = []
-  let count = 0
   if(typeof str === 'number'){
     const numToString = str.toString()
     console.log(numToString)
     return numToString
   }
   for (let i = 0; i < str.length; i++){
-    console.log(str[i])
+    //console.log(str[i])
     if(str.charCodeAt(i) >= 65 && str.charCodeAt(i) <= 90){
       let lowercase = str[i].toLowerCase()
-      if(count !== 0) {
+      if(i !== 0) {
         lowerCase.push("_")
       }
       lowerCase.push(lowercase)
-      count++
     } else {
       lowerCase.push(str[i])
     }
@@ -28,10 +26,22 @@ function toPascalCase(str){
   return result
 }
 
-toPascalCase("TestController")
-toPascalCase("MoviesAndBooks")
-toPascalCase(1)
-toPascalCase("App7Test")
+toPascalCase("Test7Welt")   //=> "test7_welt"
+toPascalCase("TestWelt")    //=> "test_welt"
+toPascalCase("test7welt")   //=> "test7welt"
+toPascalCase("helloWelt")   //=> "hello_welt"
+toPascalCase(1)             //=> "1"
+
+// Test.expect(boolean, [optional] message) 
+// Test.assertEquals(actual, expected, [optional] message)
+// Test.assertSimilar(actual, expected, [optional] message)
+// Test.assertNotEquals(actual, expected, [optional] message) 
+// Test.assertEquals(toUnderscore("Test7Welt"), "test7_welt", "Failed Test7Welt")
+// Test.assertEquals(toUnderscore("TestWelt"), "test_welt", "Failed TestWelt")
+// Test.assertEquals(toUnderscore("test7welt"), "test7welt", "Failed test7welt")
+// Test.assertEquals(toUnderscore("helloWelt"), "hello_welt", "Failed helloWelt")
+// Test.assertEquals(toUnderscore(1), "1", "Failed number")
+// Test.assertEquals(toUnderscore(null), "null", "Failed null")
 
 
 // Examples
