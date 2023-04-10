@@ -65,16 +65,16 @@ const array = [
   '35390'
   ];
 
-for(let i = 1; i < array.length - 1; i++) {
-  for(let j = 1; j < array[i].length - 1; j++) {
-    // in the same xAxis, one to the left so as to shortcircuit
-    if(array[i][j] > array[i][j-1]) {
-      console.log(`${array[i][j]} is taller than ${array[i][j - 1]}: this tree is seen!`)
-    } else {
-      console.log(`${array[i][j]} is shorter than or the same height as ${array[i][j - 1]}: this tree is hidden!`)
-    }
-  }
-}
+// for(let i = 1; i < array.length - 1; i++) {
+//   for(let j = 1; j < array[i].length - 1; j++) {
+//     // in the same xAxis, one to the left so as to shortcircuit
+//     if(array[i][j] > array[i][j-1]) {
+//       console.log(`${array[i][j]} is taller than ${array[i][j - 1]}: this tree is seen!`)
+//     } else {
+//       console.log(`${array[i][j]} is shorter than or the same height as ${array[i][j - 1]}: this tree is hidden!`)
+//     }
+//   }
+// }
 
 let visible = 0;
 
@@ -82,17 +82,20 @@ for (let i = 1; i < array.length - 1; i++) {
   for (let j = 1; j < array[i].length - 1; j++) {
     for (let k = 0; k < array[i].length; k++) {
       // vertical check
-      if (array[k][j] <= array[k-1][j] && k !== i) {
+      if (array[k][j] <= array[i][j] && k !== i) {
+        console.log(`${array[k][j]} is smaller or equal to ${array[i][j]}`)
         visible++;
-      }
-      break;
-    }
-      for (let l = 0; l < array[i].length; l++) {
-        // horizontal check
-        if (array[i][l] <= array[i][j] && l !== j) {
-          visible++;
-        }
         break;
+      } else {
+        console.log(`${array[k][j]} is taller than ${array[i][j]}`)
       }
+    }
+      // for (let l = 0; l < array[i].length; l++) {
+      //   // horizontal check
+      //   if (array[i][l] <= array[i][j] && l !== j) {
+      //     visible++;
+      //   }
+      //   break;
+      // }
   }
 }
