@@ -57,6 +57,7 @@ const testArray = [
   '200000202333110340220332420035514312151535342225553245343445434132251555330340100104010231010021300B'
 ];
 
+
 const array = [
   '30373',
   '25512',
@@ -65,37 +66,25 @@ const array = [
   '35390'
   ];
 
-// for(let i = 1; i < array.length - 1; i++) {
-//   for(let j = 1; j < array[i].length - 1; j++) {
-//     // in the same xAxis, one to the left so as to shortcircuit
-//     if(array[i][j] > array[i][j-1]) {
-//       console.log(`${array[i][j]} is taller than ${array[i][j - 1]}: this tree is seen!`)
-//     } else {
-//       console.log(`${array[i][j]} is shorter than or the same height as ${array[i][j - 1]}: this tree is hidden!`)
-//     }
-//   }
-// }
-
 let visible = 0;
 
 for (let i = 1; i < array.length - 1; i++) {
   for (let j = 1; j < array[i].length - 1; j++) {
-    for (let k = 0; k < array[i].length; k++) {
-      // vertical check
-      if (array[k][j] <= array[i][j] && k !== i) {
-        console.log(`${array[k][j]} is smaller or equal to ${array[i][j]}`)
+    // modified k loop for comparing vertical indices
+    // for (let k = 0; k < array.length; k++)
+    let k = 0;
+    let isVisible = false;
+    console.log(`tree in question: ${array[i][j]} at indices i:${i}, j:${j}`);
+    while(!isVisible && k < array.length) {
+      console.log(`tree to compare: ${array[k][j]} at indices k:${k}, j:${j}`);
+      if (array[k][j] < array[i][j]) {
+        isVisible = true;
         visible++;
-        break;
-      } else {
-        console.log(`${array[k][j]} is taller than ${array[i][j]}`)
+        console.log(`${array[k][j]} is shorter than ${array[i][j]}, thus ${array[i][j]} is visible! Number of visible trees ${visible}.`);
       }
+      k++;
     }
-      // for (let l = 0; l < array[i].length; l++) {
-      //   // horizontal check
-      //   if (array[i][l] <= array[i][j] && l !== j) {
-      //     visible++;
-      //   }
-      //   break;
-      // }
   }
 }
+
+ // we need to do another while loop to consider each of the trees that are in the column. if there is one tree that is covering it, i.e. the same or higher height, then it won't be seen. We need to store this somehow and consider looping on through the entire column this way.
