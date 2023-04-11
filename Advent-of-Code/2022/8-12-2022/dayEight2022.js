@@ -66,25 +66,56 @@ const array = [
   '35390'
   ];
 
-let visible = 0;
+let arrayWidth = array[0].length * 2;
+let arrayHeight = (array.length * 2) - 4;
+// visible starts out at 16;
+let visible = arrayWidth + arrayHeight;
+let isVisible = false;
 
 for (let i = 1; i < array.length - 1; i++) {
   for (let j = 1; j < array[i].length - 1; j++) {
+    let k = 0;
+    isVisible = false;
+    console.log(`\nTREE IN QUESTION: ${array[i][j]} at indices i:${i}, j:${j}`);
     // modified k loop for comparing vertical indices
     // for (let k = 0; k < array.length; k++)
-    let k = 0;
-    let isVisible = false;
-    console.log(`tree in question: ${array[i][j]} at indices i:${i}, j:${j}`);
-    while(!isVisible && k < array.length) {
-      console.log(`tree to compare: ${array[k][j]} at indices k:${k}, j:${j}`);
-      if (array[k][j] < array[i][j]) {
-        isVisible = true;
-        visible++;
-        console.log(`${array[k][j]} is shorter than ${array[i][j]}, thus ${array[i][j]} is visible! Number of visible trees ${visible}.`);
+    while(k < array.length) {
+      // "north" of the j index
+      if (k < j) {
+        console.log(`tree to compare: ${array[k][j]} at indices k:${k}, j:${j}`);
+        if (array[k][j] >= array[i][j]) {
+          isVisible = false;
+        } else {
+          console.log(`tree at: ${array[i][j]} can be seen from outside the forest.`);
+          isVisible = true;
+        }
+      }
+      // "south" of the j index
+      if (k > j) {
+        console.log(`tree to compare: ${array[k][j]} at indices k:${k}, j:${j}`);
+        if (array[k][j] >= array[i][j]) {
+          isVisible = false;
+        } else {
+          console.log(`tree at: ${array[i][j]} can be seen from outside the forest.`);
+          isVisible = true;
+        }
       }
       k++;
     }
+    if (isVisible) {
+      visible++;
+      console.log(`There are ${visible} trees that can be seen from outside the forest.`);
+    }
   }
+  
 }
+
+
+
+// if (array[k][j] < array[i][j]) {
+//         console.log(`${array[k][j]} is shorter than ${array[i][j]}, thus ${array[i][j]} is visible! Number of visible trees ${visible}.`);
+//       }
+// isVisible = true;
+// visible++;
 
  // we need to do another while loop to consider each of the trees that are in the column. if there is one tree that is covering it, i.e. the same or higher height, then it won't be seen. We need to store this somehow and consider looping on through the entire column this way.
