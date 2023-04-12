@@ -76,42 +76,45 @@ let southIsVisible = false;
 for (let i = 1; i < array.length - 1; i++) {
   for (let j = 1; j < array[i].length - 1; j++) {
     let k = 0;
-    northIsVisible = false;
+    northIsVisible = true;
     southIsVisible = false;
     console.log(`\nTREE IN QUESTION: ${array[i][j]} at indices i:${i}, j:${j}`);
     // modified k loop for comparing vertical indices
     // for (let k = 0; k < array.length; k++)
     while(k < array.length) {
       // "north" of the j index
-      if (k < j) {
+      if (k < i && northIsVisible == true) {
         console.log(`tree to compare: ${array[k][j]} at indices k:${k}, j:${j}`);
         if (array[k][j] >= array[i][j]) {
-          console.log(`tree at: ${array[i][j]} CANNOT be seen from outside the forest.`);
+          console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is shorter or the same height as tree ${array[k][j]} at k:${k}, j:${j} and thus CANNOT be seen from NORTH of the forest.`);
           northIsVisible = false;
-        } else {
-          console.log(`tree at: ${array[i][j]} can be seen from outside the forest.`);
-          northIsVisible = true;
+          
+        } else if (array[k][j] < array[i][j]) {
+            console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is taller than tree ${array[k][j]} at k:${k}, j:${j} and can be seen from the NORTH of the forest.`);
+            northIsVisible = true;
+            console.log(northIsVisible);
+          }
         }
-      }
       // "south" of the j index
-      if (k > j) {
-        console.log(`tree to compare: ${array[k][j]} at indices k:${k}, j:${j}`);
-        if (array[k][j] >= array[i][j]) {
-          console.log(`tree at: ${array[i][j]} CANNOT be seen from outside the forest.`);
-          southIsVisible = false;
-        } else {
-          console.log(`tree at: ${array[i][j]} can be seen from outside the forest.`);
-          southIsVisible = true;
+        if (k > i && northIsVisible == false) {
+          console.log(`tree to compare: ${array[k][j]} at indices k:${k}, j:${j}`);
+          if (array[k][j] >= array[i][j]) {
+            console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is shorter or the same height as tree ${array[k][j]} at k:${k}, j:${j} and thus CANNOT be seen from SOUTH of the forest.`);
+            southIsVisible = false;
+            k = array.length;
+          } else if (array[k][j] < array[i][j]) {
+            console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is taller than tree ${array[k][j]} at k:${k}, j:${j} and can be seen from the SOUTH of the forest.`);
+            southIsVisible = true;
+          }
         }
-      }
+      
       k++;
     }
     if (northIsVisible || southIsVisible) {
       visible++;
-      console.log(`There are ${visible} trees that can be seen from outside the forest.`);
     }
+    console.log(`There are ${visible} trees that can be seen from outside the forest.`);
   }
-  
 }
 
 
