@@ -27,7 +27,35 @@ In the bottom row, the middle 5 is visible, but the 3 and 4 are not.
 With 16 trees visible on the edge and another 5 visible in the interior, a total of 21 trees are visible in this arrangement.
 
 Consider your map; how many trees are visible from outside the grid?
+
+THINGS TO DO
+1. Check and see if trees on one side (north, south, east or west) are the same or greater size >=. We do this because, if even one of them are, it doesn't matter if the others aren't, as long as we're on the same side(N, S, E, W) as we need only one tree to hide the target tree on that side. If the tree is seen from one direction, we don't have to do anymore work at all, the tree is seen and can be added to the total visible trees. This is the importance of a while loop: it allows us to lower the time complexity some.
+
+2. Be sure to not count the trees in the logic of the loops on the outer edge as they are already seen, having no trees surrounding one side of them:
+  a. first line and last line of the array
+  b. or the beginning and end of each array element array[i][0] and array[i][array[i].length - 1]
+  c. these numbers are computed at the arrayLength and arrayHeigth variables and added to the visible variable
+
+3. This is simple matrix traversal with checks to short-circuit when a tree is hidden on one side(north, south, east or west) and then adding to the visible count when a tree is determined as not hidden.
+
+Space and Time Complexity
+I'm not storing anything outside the for loops that includes anything other than booleans, as variables are reassigned values, old values are lost, which puts the space complexity to just above O(1). I believe the time complexity is O(n^2) as we are using a nested for loop. It is likely slightly over that as there are also while loops, however, I don't know the precise calculations on that. 
+
+My Considerations
+I chose to go from the North and West first in each while loop since that's where the logical for loop usually starts, at least in my experience. This could be modified easily enough if we know that certain values are going to end up on one side or the other.
+
+There is likely a better way to do this, possibly using a method of using two pointers instead of one, however, on my first time through, this was a challenge enough!
+
+It took me around 5.5 hours to complete this through the course of three different sessions.
 */
+
+const testArray = [
+  '30373',
+  '25512',
+  '65332',
+  '33549',
+  '35390'
+  ];
 
 // Extract data
 const fs = require('fs');
@@ -36,40 +64,11 @@ const input = fs.readFileSync("./input.txt", "utf-8");
 
 const array = input.split("\n");
 
-// console.log(inputToArray.length);
-
-// THINGS TO DO
-// change each string in the array to an array of numbers? '123456' to [1,2,3,4,5,6], etc.? Maybe not, strings can be iterated over, can they be compared correctly?
-// const line = '123456'; 
-// console.log(line.length); // length works
-// console.log('1' < '5'); //looks like we can as this is true
-// Check and see if trees on either side are the same or greater size >=, if all of them are, then the tree isn't seen on that side
-// be sure to not count the trees on the outer edge as they are already seen, having no trees surrounding one side of them:
-// first line, 0th index at the beginning on the total array or beginning of each array
-// last line, or n-1th index at the end on the total array or the end of each array/string
-
-const testArray = [
-  '110120112111001131321041300301301303441234124551121322251330313143000402010402222102132100122022010',
-  '102022211221313002214040003422200133214443443344513144525425414312301403121303234303302002320112112',
-  '210010213122220022044234043143210343153522554535142243154212251531131301322100210101210220021120002',
-  '102121023302220201244401343001244152321314335555225552452235435142424222400201243131033233132300012',
-  '000111230312012203122030310412244414125415343124153241254535545413214132223113434142202210123003200',
-  '200000202333110340220332420035514312151535342225553245343445434132251555330340100104010231010021300B'
-];
-
-
-// const array = [
-//   '30373',
-//   '25512',
-//   '65332',
-//   '33549',
-//   '35390'
-//   ];
-
 let arrayWidth = array[0].length * 2;
 let arrayHeight = (array.length * 2) - 4;
 // visible starts out at 16;
 let visible = arrayWidth + arrayHeight;
+// set visible variables globally
 let northIsVisible;
 let southIsVisible;
 let westIsVisible;
@@ -80,84 +79,57 @@ for (let i = 1; i < array.length - 1; i++) {
     let k = 0;
     northIsVisible = true;
     southIsVisible = false;
-    //console.log(`\nTREE IN QUESTION: ${array[i][j]} at indices i:${i}, j:${j}`);
     // modified for loop for comparing vertical indices
     // for (let k = 0; k < array.length; k++)
     while(k < array.length) {
       // "north" of the j index
       if (k < i && northIsVisible) {
-        //console.log(`tree to compare: ${array[k][j]} at indices k:${k}, j:${j}`);
         if (array[k][j] >= array[i][j]) {
-          //console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is shorter or the same height as tree ${array[k][j]} at k:${k}, j:${j} and thus CANNOT be seen from NORTH of the forest.`);
           northIsVisible = false;
         } else if (array[k][j] < array[i][j]) {
-            //console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is taller than tree ${array[k][j]} at k:${k}, j:${j} and can be seen from the NORTH of the forest.`);
             northIsVisible = true;
-            //console.log(northIsVisible);
           }
         }
-      // "south" of the j index
+      // "south" of the j index, but only if the target tree is hidden from the north
         if (k > i && !northIsVisible) {
-          //console.log(`tree to compare: ${array[k][j]} at indices k:${k}, j:${j}`);
           if (array[k][j] >= array[i][j]) {
-            //console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is shorter or the same height as tree ${array[k][j]} at k:${k}, j:${j} and thus CANNOT be seen from SOUTH of the forest.`);
             southIsVisible = false;
             k = array.length;
           } else if (array[k][j] < array[i][j]) {
-            //console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is taller than tree ${array[k][j]} at k:${k}, j:${j} and can be seen from the SOUTH of the forest.`);
             southIsVisible = true;
           }
         }
-      
       k++;
     }
     let l = 0;
     westIsVisible = true;
     eastIsVisible = false;
-    //console.log(`\nTREE IN QUESTION: ${array[i][j]} at indices i:${i}, j:${j}`);
     // modified for loop for comparing vertical indices
     // for (let k = 0; k < array.length; k++)
     while(l < array[i].length && !northIsVisible && !southIsVisible) {
-      // "west" of the j index
+      // "west" of the j index, but only if the target tree is hidden from both the north and south
       if (l < j && westIsVisible) {
-        //console.log(`tree to compare: ${array[i][l]} at indices i:${i}, l:${l}`);
         if (array[i][l] >= array[i][j]) {
-          //console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is shorter or the same height as tree ${array[i][l]} at i:${i}, l:${l} and thus CANNOT be seen from WEST of the forest.`);
           westIsVisible = false;
         } else if (array[i][l] < array[i][j]) {
-            //console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is taller than tree ${array[i][l]} at i:${i}, l:${l} and can be seen from the WEST of the forest.`);
             westIsVisible = true;
-            //console.log(westIsVisible);
           }
         }
-      // "east" of the j index
+      // "east" of the j index, but we execute this line of code only if the tree is already hidden from the north, south, and west
         if (l > j && !westIsVisible) {
-          //console.log(`tree to compare: ${array[i][l]} at indices i:${i}, l:${l}`);
           if (array[i][l] >= array[i][j]) {
-            //console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is shorter or the same height as tree ${array[i][l]} at i:${i}, l:${l} and thus CANNOT be seen from EAST of the forest.`);
             eastIsVisible = false;
             l = array[i].length;
           } else if (array[i][l] < array[i][j]) {
-            //console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is taller than tree ${array[i][l]} at i:${i}, l:${l} and can be seen from the EAST of the forest.`);
             eastIsVisible = true;
           }
         }
-      
       l++;
     }
+    // we up the visible count only if the target tree was seen from one of the directions
     if (northIsVisible || southIsVisible || westIsVisible || eastIsVisible) {
       visible++;
     }
     console.log(`There are ${visible} trees that can be seen from outside the forest.`);
   }
 }
-
-
-
-// if (array[k][j] < array[i][j]) {
-//         console.log(`${array[k][j]} is shorter than ${array[i][j]}, thus ${array[i][j]} is visible! Number of visible trees ${visible}.`);
-//       }
-// isVisible = true;
-// visible++;
-
- // we need to do another while loop to consider each of the trees that are in the column. if there is one tree that is covering it, i.e. the same or higher height, then it won't be seen. We need to store this somehow and consider looping on through the entire column this way.
