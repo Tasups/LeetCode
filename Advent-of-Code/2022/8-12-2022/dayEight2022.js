@@ -70,8 +70,10 @@ let arrayWidth = array[0].length * 2;
 let arrayHeight = (array.length * 2) - 4;
 // visible starts out at 16;
 let visible = arrayWidth + arrayHeight;
-let northIsVisible = false;
-let southIsVisible = false;
+let northIsVisible;
+let southIsVisible;
+let westIsVisible;
+let eastIsVisible;
 
 for (let i = 1; i < array.length - 1; i++) {
   for (let j = 1; j < array[i].length - 1; j++) {
@@ -79,16 +81,15 @@ for (let i = 1; i < array.length - 1; i++) {
     northIsVisible = true;
     southIsVisible = false;
     console.log(`\nTREE IN QUESTION: ${array[i][j]} at indices i:${i}, j:${j}`);
-    // modified k loop for comparing vertical indices
+    // modified for loop for comparing vertical indices
     // for (let k = 0; k < array.length; k++)
     while(k < array.length) {
       // "north" of the j index
-      if (k < i && northIsVisible == true) {
+      if (k < i && northIsVisible) {
         console.log(`tree to compare: ${array[k][j]} at indices k:${k}, j:${j}`);
         if (array[k][j] >= array[i][j]) {
           console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is shorter or the same height as tree ${array[k][j]} at k:${k}, j:${j} and thus CANNOT be seen from NORTH of the forest.`);
           northIsVisible = false;
-          
         } else if (array[k][j] < array[i][j]) {
             console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is taller than tree ${array[k][j]} at k:${k}, j:${j} and can be seen from the NORTH of the forest.`);
             northIsVisible = true;
@@ -96,7 +97,7 @@ for (let i = 1; i < array.length - 1; i++) {
           }
         }
       // "south" of the j index
-        if (k > i && northIsVisible == false) {
+        if (k > i && !northIsVisible) {
           console.log(`tree to compare: ${array[k][j]} at indices k:${k}, j:${j}`);
           if (array[k][j] >= array[i][j]) {
             console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is shorter or the same height as tree ${array[k][j]} at k:${k}, j:${j} and thus CANNOT be seen from SOUTH of the forest.`);
@@ -111,6 +112,43 @@ for (let i = 1; i < array.length - 1; i++) {
       k++;
     }
     if (northIsVisible || southIsVisible) {
+      visible++;
+    }
+    let l = 0;
+    westIsVisible = true;
+    eastIsVisible = false;
+    console.log(`\nTREE IN QUESTION: ${array[i][j]} at indices i:${i}, j:${j}`);
+    // modified for loop for comparing vertical indices
+    // for (let k = 0; k < array.length; k++)
+    while(l < array[i].length /*&& !northIsVisible && !southIsVisible*/) {
+      // "west" of the j index
+      if (l < j && westIsVisible) {
+        console.log(`tree to compare: ${array[i][l]} at indices i:${i}, l:${l}`);
+        if (array[i][l] >= array[i][j]) {
+          console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is shorter or the same height as tree ${array[i][l]} at i:${i}, l:${l} and thus CANNOT be seen from WEST of the forest.`);
+          westIsVisible = false;
+        } else if (array[i][l] < array[i][j]) {
+            console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is taller than tree ${array[i][l]} at i:${i}, l:${l} and can be seen from the WEST of the forest.`);
+            westIsVisible = true;
+            console.log(westIsVisible);
+          }
+        }
+      // "east" of the j index
+        if (l > j && !westIsVisible) {
+          console.log(`tree to compare: ${array[i][l]} at indices i:${i}, l:${l}`);
+          if (array[i][l] >= array[i][j]) {
+            console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is shorter or the same height as tree ${array[i][l]} at i:${i}, l:${l} and thus CANNOT be seen from EAST of the forest.`);
+            eastIsVisible = false;
+            l = array[i].length;
+          } else if (array[i][l] < array[i][j]) {
+            console.log(`tree ${array[i][j]} at: i:${i}, j:${j} is taller than tree ${array[i][l]} at i:${i}, l:${l} and can be seen from the EAST of the forest.`);
+            eastIsVisible = true;
+          }
+        }
+      
+      l++;
+    }
+    if (westIsVisible || eastIsVisible) {
       visible++;
     }
     console.log(`There are ${visible} trees that can be seen from outside the forest.`);
