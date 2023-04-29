@@ -49,7 +49,136 @@ There is likely a better way to do this, possibly using a method of using two po
 It took me around 5.5 hours to complete this through the course of three different sessions.
 */
 
-const testArray = [
+
+
+// Extract data
+const fs = require('fs');
+
+const input = fs.readFileSync("./input.txt", "utf-8");
+
+const inputArray = input.split("\n");
+
+// let arrayWidth = array[0].length * 2;
+// let arrayHeight = (array.length * 2) - 4;
+// // visible starts out at 16;
+// let visible = arrayWidth + arrayHeight;
+// // set visible variables globally
+// let northIsVisible;
+// let southIsVisible;
+// let westIsVisible;
+// let eastIsVisible;
+
+// for (let i = 1; i < array.length - 1; i++) {
+//   for (let j = 1; j < array[i].length - 1; j++) {
+//     let k = 0;
+//     northIsVisible = true;
+//     southIsVisible = false;
+//     // modified for loop for comparing vertical indices
+//     // for (let k = 0; k < array.length; k++)
+//     while(k < array.length) {
+//       // "north" of the j index
+//       if (k < i && northIsVisible) {
+//         if (array[k][j] >= array[i][j]) {
+//           northIsVisible = false;
+//         } else if (array[k][j] < array[i][j]) {
+//             northIsVisible = true;
+//           }
+//         }
+//       // "south" of the j index, but only if the target tree is hidden from the north
+//         if (k > i && !northIsVisible) {
+//           if (array[k][j] >= array[i][j]) {
+//             southIsVisible = false;
+//             k = array.length;
+//           } else if (array[k][j] < array[i][j]) {
+//             southIsVisible = true;
+//           }
+//         }
+//       k++;
+//     }
+//     let l = 0;
+//     westIsVisible = true;
+//     eastIsVisible = false;
+//     // modified for loop for comparing vertical indices
+//     // for (let k = 0; k < array.length; k++)
+//     while(l < array[i].length && !northIsVisible && !southIsVisible) {
+//       // "west" of the j index, but only if the target tree is hidden from both the north and south
+//       if (l < j && westIsVisible) {
+//         if (array[i][l] >= array[i][j]) {
+//           westIsVisible = false;
+//         } else if (array[i][l] < array[i][j]) {
+//             westIsVisible = true;
+//           }
+//         }
+//       // "east" of the j index, but we execute this line of code only if the tree is already hidden from the north, south, and west
+//         if (l > j && !westIsVisible) {
+//           if (array[i][l] >= array[i][j]) {
+//             eastIsVisible = false;
+//             l = array[i].length;
+//           } else if (array[i][l] < array[i][j]) {
+//             eastIsVisible = true;
+//           }
+//         }
+//       l++;
+//     }
+//     // we up the visible count only if the target tree was seen from one of the directions
+//     if (northIsVisible || southIsVisible || westIsVisible || eastIsVisible) {
+//       visible++;
+//     }
+//     console.log(`There are ${visible} trees that can be seen from outside the forest.`);
+//   }
+// }
+
+/*
+
+--- Part Two ---
+Content with the amount of tree cover available, the Elves just need to know the best spot to build their tree house: they would like to be able to see a lot of trees.
+
+To measure the viewing distance from a given tree, look up, down, left, and right from that tree; stop if you reach an edge or at the first tree that is the same height or taller than the tree under consideration. (If a tree is right on the edge, at least one of its viewing distances will be zero.)
+
+The Elves don't care about distant trees taller than those found by the rules above; the proposed tree house has large eaves to keep it dry, so they wouldn't be able to see higher than the tree house anyway.
+
+In the example above, consider the middle 5 in the second row:
+
+30373
+25512
+65332
+33549
+35390
+Looking up, its view is not blocked; it can see 1 tree (of height 3).
+Looking left, its view is blocked immediately; it can see only 1 tree (of height 5, right next to it).
+Looking right, its view is not blocked; it can see 2 trees.
+Looking down, its view is blocked eventually; it can see 2 trees (one of height 3, then the tree of height 5 that blocks its view).
+A tree's scenic score is found by multiplying together its viewing distance in each of the four directions. For this tree, this is 4 (found by multiplying 1 * 1 * 2 * 2).
+
+However, you can do even better: consider the tree of height 5 in the middle of the fourth row:
+
+30373
+25512
+65332
+33549
+35390
+Looking up, its view is blocked at 2 trees (by another tree with a height of 5).
+Looking left, its view is not blocked; it can see 2 trees.
+Looking down, its view is also not blocked; it can see 1 tree.
+Looking right, its view is blocked at 2 trees (by a massive tree of height 9).
+This tree's scenic score is 8 (2 * 2 * 1 * 2); this is the ideal spot for the tree house.
+
+Consider each tree on your map. What is the highest scenic score possible for any tree?
+
+
+APPROACH
+The simplest approach is to look at any one tree and go above and below it in the column [j] and then to go horizontally in the row [i]. We could use a [k] index to start at [i] and move upwards until [i][k] is greater than [i][j]. At that point we can take the difference of [i][j] and [k][j] is by first seeing if k > i (the value of the index that we're starting from or [i][j]), if it isn't, we make this operation i - k and get value A for the column above [i][j]. If k > i, we make the operation k - i; that's value B. We effectively do the same thing for the horizontal measurements but this time using [l] to compare to [j].
+
+THINGS TO DO 
+
+1. Start a nested for loop to go through the entire matrix. Both loops should go through the entirety of numbers, not leaving out any rows or columns.
+2. Create a for loop for the comparators, k for the lower column, l for the higher column, m for the left part of the row, and n for the right part of the row.
+3. Inside the for loops, we check if the point (indices) we are currently on are lower. If they are, we increment the counter for that particular area; kValue, lValue, mValue, and nValue.
+4. We multiple the values and if the result is higher than the particular one we update those values. Keep in mind we still need the [i][j] location.
+
+*/
+
+const array = [
   '30373',
   '25512',
   '65332',
@@ -57,79 +186,75 @@ const testArray = [
   '35390'
   ];
 
-// Extract data
-const fs = require('fs');
+let bestTree = {
+  iLoc: 0,
+  jLoc: 0,
+  viewLength: 0
+};
 
-const input = fs.readFileSync("./input.txt", "utf-8");
-
-const array = input.split("\n");
-
-let arrayWidth = array[0].length * 2;
-let arrayHeight = (array.length * 2) - 4;
-// visible starts out at 16;
-let visible = arrayWidth + arrayHeight;
-// set visible variables globally
-let northIsVisible;
-let southIsVisible;
-let westIsVisible;
-let eastIsVisible;
-
-for (let i = 1; i < array.length - 1; i++) {
-  for (let j = 1; j < array[i].length - 1; j++) {
-    let k = 0;
-    northIsVisible = true;
-    southIsVisible = false;
-    // modified for loop for comparing vertical indices
-    // for (let k = 0; k < array.length; k++)
-    while(k < array.length) {
-      // "north" of the j index
-      if (k < i && northIsVisible) {
-        if (array[k][j] >= array[i][j]) {
-          northIsVisible = false;
-        } else if (array[k][j] < array[i][j]) {
-            northIsVisible = true;
-          }
-        }
-      // "south" of the j index, but only if the target tree is hidden from the north
-        if (k > i && !northIsVisible) {
-          if (array[k][j] >= array[i][j]) {
-            southIsVisible = false;
-            k = array.length;
-          } else if (array[k][j] < array[i][j]) {
-            southIsVisible = true;
-          }
-        }
-      k++;
+for (let i = 0; i < array.length; i++) {
+  console.log("I = " + i);
+  for (let j = 0; j < array[i].length; j++) {
+    console.log("J = " + j);
+    
+    // vertical check for lower indices such as i-1, i-2... up to -1 or out of range
+    let vertLowIndexValue = 1;
+    for (let k = i - 1; k >= 0; k--) {
+      let vLTreeToCompare = array[k][j];
+      if (vLTreeToCompare >= array[i][j]) {
+        // is this break going to break the k for loop? If not, set k to -1
+        break;
+      } else if (vLTreeToCompare < array[i][j]) {
+        vertLowIndexValue++;
+      }
     }
-    let l = 0;
-    westIsVisible = true;
-    eastIsVisible = false;
-    // modified for loop for comparing vertical indices
-    // for (let k = 0; k < array.length; k++)
-    while(l < array[i].length && !northIsVisible && !southIsVisible) {
-      // "west" of the j index, but only if the target tree is hidden from both the north and south
-      if (l < j && westIsVisible) {
-        if (array[i][l] >= array[i][j]) {
-          westIsVisible = false;
-        } else if (array[i][l] < array[i][j]) {
-            westIsVisible = true;
-          }
-        }
-      // "east" of the j index, but we execute this line of code only if the tree is already hidden from the north, south, and west
-        if (l > j && !westIsVisible) {
-          if (array[i][l] >= array[i][j]) {
-            eastIsVisible = false;
-            l = array[i].length;
-          } else if (array[i][l] < array[i][j]) {
-            eastIsVisible = true;
-          }
-        }
-      l++;
+    
+    // vertical check for higher indices such as i+1, i+2... up to array.length or out of range
+    let vertHighIndexValue = 1;
+    for (let l = i + 1; l <= array.length; l++) {
+      console.log(`The value at l[${l}] and j[${j}] = ${array[l][j]}`);
+      let vHTreeToCompare = array[l][j];
+      if (vHTreeToCompare >= array[i][j]) {
+        // is this break going to break the l for loop? If not, set l to array.length + 1
+        break;
+      } else if (vHTreeToCompare < array[i][j]) {
+        vertHighIndexValue++;
+      }
     }
-    // we up the visible count only if the target tree was seen from one of the directions
-    if (northIsVisible || southIsVisible || westIsVisible || eastIsVisible) {
-      visible++;
+    
+    // horizontal check for lower indices such as j-1, j-2... up to -1 or out of range
+    let horLowIndexValue = 1;
+    for (let m = j - 1; m >= 0; m--) {
+      let hLTreeToCompare = array[i][m];
+      if (hLTreeToCompare >= array[i][j]) {
+        // is this break going to break the l for loop? If not, set l to array.length + 1
+        break;
+      } else if (hLTreeToCompare < array[i][j]) {
+        horLowIndexValue++;
+      }
     }
-    console.log(`There are ${visible} trees that can be seen from outside the forest.`);
+    
+    // horizontal check for higher indices such as j+1, j+2... up to array[i].length + 1 or out of range
+    let horHighIndexValue = 1;
+    for (let n = j + 1; n <= array[i].length; n++) {
+      let hHTreeToCompare = array[i][n];
+      if (hHTreeToCompare >= array[i][j]){
+        // is this break going to break the l for loop? If not, set l to array.length + 1
+        break;
+      } else if (hHTreeToCompare < array[i][j]) {
+        horHighIndexValue++;
+      }
+    }
+    
+    let result = vertHighIndexValue * vertLowIndexValue * horHighIndexValue * horLowIndexValue;
+    
+    if (result > bestTree.viewLength) {
+      bestTree.iLoc = i;
+      bestTree.jLoc = j;
+      bestTree.viewLength = result;
+    }
+    
   }
 }
+
+console.log(bestTree);
