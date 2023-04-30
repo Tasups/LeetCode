@@ -56,7 +56,7 @@ const fs = require('fs');
 
 const input = fs.readFileSync("./input.txt", "utf-8");
 
-const inputArray = input.split("\n");
+const array = input.split("\n");
 
 // let arrayWidth = array[0].length * 2;
 // let arrayHeight = (array.length * 2) - 4;
@@ -178,14 +178,14 @@ THINGS TO DO
 
 */
 
-const array = [
+const testArray = [
   '30373',
   '25512',
   '65332',
   '33549',
   '35390'
   ];
-
+  
 let bestTree = {
   iLoc: 0,
   jLoc: 0,
@@ -193,87 +193,84 @@ let bestTree = {
 };
 
 for (let i = 0; i < array.length; i++) {
-  console.log("I = " + i);
+  console.log("** I = " + i + " **");
   for (let j = 0; j < array[i].length; j++) {
-    // console.log("J = " + j);
-    // console.log(`The value at i[${i}] and j[${j}] is ${array[i][j]}`);
-    
+   
     // vertical check for lower indices such as i-1, i-2... up to -1 or out of range
     let vertLowIndexValue = 0;
-    for (let k = i - 1; k > 0; k--) {
-      // console.log(`The value at k[${k}] and j[${j}] = ${array[k][j]}`);
-      let vLTreeToCompare = array[k][j];
-      if (vLTreeToCompare > array[i][j]) {
-        // is this break going to break the k for loop? If not, set k to -1
-        vertLowIndexValue++;
-        k = -1;
-      } else if (vLTreeToCompare == array[i][j]) {
-        vertLowIndexValue++;
-        k = -1;
-      } else if (vLTreeToCompare < array[i][j]) {
-        vertLowIndexValue++;
+    if (i != 0) {
+      for (let k = i - 1; k >= 0; k--) {
+        let vLTreeToCompare = array[k][j];
+        console.log(`k: ${k} || j: ${j}`);
+        console.log("Tree to compare: " + vLTreeToCompare);
+        if (vLTreeToCompare >= array[i][j]) {
+          vertLowIndexValue++;
+          k = -1;
+        } else {
+          vertLowIndexValue++;
+        } 
       } 
     }
     
     // vertical check for higher indices such as i+1, i+2... up to array.length or out of range
     let vertHighIndexValue = 0;
-    for (let l = i + 1; l < array.length; l++) {
-      // console.log(`The value at l[${l}] and j[${j}] = ${array[l][j]}`);
-      let vHTreeToCompare = array[l][j];
-      if (vHTreeToCompare >= array[i][j]) {
-        // is this break going to break the l for loop? If not, set l to array.length + 1
-        vertHighIndexValue++;
-        l = array.length + 1;
-      } else if (vHTreeToCompare == array[i][j]) {
-        vertHighIndexValue++;
-        l = array.length + 1;
-      } else if (vHTreeToCompare < array[i][j]) {
-        vertHighIndexValue++;
+    if (i < array.length - 2) {
+      for (let l = i + 1; l < array.length; l++) {
+        let vHTreeToCompare = array[l][j];
+        if (vHTreeToCompare >= array[i][j]) {
+          vertHighIndexValue++;
+          l = array.length + 1;
+        } else {
+          vertHighIndexValue++;
+        }
       }
     }
     
     // horizontal check for lower indices such as j-1, j-2... up to -1 or out of range
     let horLowIndexValue = 0;
-    for (let m = (j - 1); m > 0; m--) {
-      // console.log(`The value at i[${i}] and m[${m}] = ${array[i][m]}`);
-      let hLTreeToCompare = array[i][m];
-      if (hLTreeToCompare >= array[i][j]) {
-        // is this break going to break the l for loop? If not, set l to array.length + 1
-        horLowIndexValue++;
-        m = -1;
-      } else if (hLTreeToCompare == array[i][j]) {
-        horLowIndexValue++;
-        m = -1;
-      } else if (hLTreeToCompare < array[i][j]) {
-        horLowIndexValue++;
+    if (j != 0) {
+      for (let m = j - 1; m >= 0; m--) {
+        let hLTreeToCompare = array[i][m];
+        if (hLTreeToCompare >= array[i][j]) {
+          horLowIndexValue++;
+          m = -1;
+        } else {
+          horLowIndexValue++;
+        }
       }
     }
     
     // horizontal check for higher indices such as j+1, j+2... up to array[i].length + 1 or out of range
     let horHighIndexValue = 0;
-    for (let n = j + 1; n < array[i].length; n++) {
-      // console.log(`The value at i[${i}] and m[${n}] = ${array[i][n]}`);
-      let hHTreeToCompare = array[i][n];
-      if (hHTreeToCompare >= array[i][j]){
-        // is this break going to break the l for loop? If not, set l to array.length + 1
-        horHighIndexValue++;
-        n = array[i].length + 1;
-      } else if (hHTreeToCompare == array[i][j]) {
-        horHighIndexValue++;
-        n = array[i].length + 1;
-      } else if (hHTreeToCompare < array[i][j] && n < array[i].length) {
-        horHighIndexValue++;
+    if (j < array[i].length - 2) {
+      for (let n = j + 1; n < array[i].length; n++) {
+        let hHTreeToCompare = array[i][n];
+        if (hHTreeToCompare >= array[i][j]){
+          horHighIndexValue++;
+          n = array[i].length + 1;
+        } else {
+          horHighIndexValue++;
+        }
       }
     }
     
     console.log(`i: ${i} || j: ${j}`);
+    console.log("Prior to removing 0s:")
+    console.log(`verHighVal: ${vertHighIndexValue} || vertLowVal: ${vertLowIndexValue} || horHighVal: ${horHighIndexValue} || horLowVal: ${horLowIndexValue}`);
+    
+    if(vertHighIndexValue == 0) vertHighIndexValue = 1;
+    if(vertLowIndexValue == 0) vertLowIndexValue = 1;
+    if(horHighIndexValue == 0) horHighIndexValue = 1;
+    if(horLowIndexValue == 0) horLowIndexValue = 1;
+    
+    console.log("After removing 0s:")
     console.log(`verHighVal: ${vertHighIndexValue} || vertLowVal: ${vertLowIndexValue} || horHighVal: ${horHighIndexValue} || horLowVal: ${horLowIndexValue}`);
     
     let result = vertHighIndexValue * vertLowIndexValue * horHighIndexValue * horLowIndexValue;
-    console.log(result);
+    console.log("Result: " + result);
     console.log(" ");
     
-    if (result > bestTree.viewLength) {
+    if (result >= bestTree.viewLength) {
       bestTree.iLoc = i;
       bestTree.jLoc = j;
       bestTree.viewLength = result;
