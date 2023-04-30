@@ -199,7 +199,7 @@ for (let i = 0; i < array.length; i++) {
     // console.log(`The value at i[${i}] and j[${j}] is ${array[i][j]}`);
     
     // vertical check for lower indices such as i-1, i-2... up to -1 or out of range
-    let vertLowIndexValue = 1;
+    let vertLowIndexValue = 0;
     for (let k = i - 1; k > 0; k--) {
       // console.log(`The value at k[${k}] and j[${j}] = ${array[k][j]}`);
       let vLTreeToCompare = array[k][j];
@@ -216,7 +216,7 @@ for (let i = 0; i < array.length; i++) {
     }
     
     // vertical check for higher indices such as i+1, i+2... up to array.length or out of range
-    let vertHighIndexValue = 1;
+    let vertHighIndexValue = 0;
     for (let l = i + 1; l < array.length; l++) {
       // console.log(`The value at l[${l}] and j[${j}] = ${array[l][j]}`);
       let vHTreeToCompare = array[l][j];
@@ -233,7 +233,7 @@ for (let i = 0; i < array.length; i++) {
     }
     
     // horizontal check for lower indices such as j-1, j-2... up to -1 or out of range
-    let horLowIndexValue = 1;
+    let horLowIndexValue = 0;
     for (let m = (j - 1); m > 0; m--) {
       // console.log(`The value at i[${i}] and m[${m}] = ${array[i][m]}`);
       let hLTreeToCompare = array[i][m];
@@ -250,7 +250,7 @@ for (let i = 0; i < array.length; i++) {
     }
     
     // horizontal check for higher indices such as j+1, j+2... up to array[i].length + 1 or out of range
-    let horHighIndexValue = 1;
+    let horHighIndexValue = 0;
     for (let n = j + 1; n < array[i].length; n++) {
       // console.log(`The value at i[${i}] and m[${n}] = ${array[i][n]}`);
       let hHTreeToCompare = array[i][n];
