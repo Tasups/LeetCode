@@ -20,6 +20,8 @@ Link to Wikipedia explaining matrix multiplication (look at the square matrix ex
 This is a bad link
 A more visual explanation of matrix multiplication: http://matrixmultiplication.xyz
 
+Here's a better one: https://youtu.be/2spTnAiQg4M
+
 * MY NOTES *********************************************************************
 
 There were somethings missing in the above, I did some research on matrix multiplication and found information that, while helpful, may not be needed here as we will be working only with square matrices. However, working through a few examples on paper actually made this process easier to understand. 
@@ -41,6 +43,43 @@ THINGS TO DO:
 
 */
 
+
+  
+function matrixMultiplication(arrayA, arrayB) {
+  // initialize array C, this will be the product matrix' shell
+  let arrayC = [];
+    
+  // create the inner arrays of the product matrix, this will hold the actual values of the matrix. We have to use arrayA[0].length due to the fact that when multiplying matrices, you have to make sure that the first array has a row value equal to that of the column value of the second matrix. Thus, we know that if the matrices are validated to be able to be multiplied, the length of the first array in the first array shell, or matrix, will be the exact number of rows needed for the product matrix or array of arrays.
+  for (let i = 0; i < arrayA[0].length; i++) {
+    arrayC.push([]);
+  }
+  
+  // initialize the index value
+  let indexTotal = 0;
+  
+  // iterate through the outer array
+  for (let i = 0; i < arrayA.length; i++) {
+    // iterate through the inner arrays. This will result in out of bounds or bad values and throw an error unless you delimit the bounds with something like using the modulus operator, which is used here to allow a value of arrayA[0].length * arrayB.length; Why those particular values? 
+    for (let j = 0; j < arrayA[0].length * arrayB.length; j++) {
+      // we multiply the appropriate values in the arrays
+      let product = arrayA[i][j % arrayB.length] * arrayB[j % arrayB.length][Math.floor(j / arrayB[0].length)];
+      // we increment the total 
+      indexTotal += product;
+      // now, once we get to the last element in the arrayB iteration at a particular i index, we push that total to the product array, arrayC, and reset the total
+      if (j % arrayB.length == (arrayB.length - 1)) {
+        arrayC[i].push(indexTotal);
+        indexTotal = 0;
+      }
+    }
+  }
+
+console.log(arrayC);
+}
+
+
+// Test Arrays
+
+// TEST ONE
 let arrayA = [
   [1, 5, 9],
   [8, 3, 2],
@@ -53,42 +92,54 @@ let arrayB = [
   [3, 8, 5],
   ];
   
-let arrayC = [];
+
+matrixMultiplication(arrayA, arrayB);
+// this should equal [ [ 71, 86, 76 ], [ 99, 54, 36 ], [ 109, 84, 61 ] ]
+
+// TEST TWO
+let testArrayOne = [
+  [1, 2], 
+  [3, 2]
+  ]; 
+
+let testArrayTwo = [
+  [3, 2], 
+  [1, 1]
+  ];
+
+matrixMultiplication(testArrayOne, testArrayTwo);
+// this should equal [ [5, 4], [11, 8] ]
+
+// TEST THREE
+// let arrayBruceBanner = [
+//   [3, 1, 4]
+//   ];
+
+// let arrayHulk = [
+//   [4, 3],
+//   [2, 5],
+//   [6, 8],
+//   ];
   
-for (let i = 0; i < arrayA.length; i++) {
-  arrayC.push([]);
-}
+// matrixMultiplication(arrayBruceBanner, arrayHulk);
+// // this should equal [38,46];
 
-// console.log(arrayC);
 
-let indexTotal = 0;
-
-for (let i = 0; i < arrayA.length; i++) {
-  console.log("i INCREMENTS")
+// // TEST FOUR
+// let anotherArray = [
+//   [1, 3, 4, 1, 7],
+//   [4, 6, 8, 5, 9],
+//   [7, 5, 4, 3, 4],
+//   [9, 8, 1, 2, 5],
+//   ];
   
-  for (let j = 0; j < arrayA[0].length * arrayB.length; j++) {
-    console.log("\ni:" + i + " j:" + j);
-    console.log("Actual j:" + j % arrayB.length)
-    let product = arrayA[i][j % arrayB.length] * arrayB[j % arrayB[0].length][Math.floor(j / arrayB[0].length)]; //Math.floor(j / arrayB[0].length)
-    console.log(arrayA[i][j % arrayB.length] + " times " + arrayB[i][j % arrayB[0].length] + " equals: " +  product)
-    
-    indexTotal += product;
-    
-    console.log("total: " + indexTotal)
-    if (j % arrayB.length == 2) {
-      console.log("push " + indexTotal + " into C array")
-      arrayC[i].push(indexTotal);
-      indexTotal = 0;
-    }
-    // for (let k = 0; k < arrayB.length; k++) {
-    //   indexTotal += product;
-    // }
-    
-    //console.log(product);
-    //container[j] = product;
-  }
-  //console.log(container);
-}
-
-console.log(arrayC);
-
+// let yesOneMoreArray = [
+//   [2, 4, 6, 8, 2, 4, 7],
+//   [1, 8, 2, 3, 4, 8, 9],
+//   [3, 9, 5, 4, 5, 2, 1],
+//   [4, 1, 9, 7, 9, 7, 3],
+//   [7, 6, 1, 9, 1, 3, 6],
+//   ];
+  
+// matrixMultiplication(anotherArray, yesOneMoreArray);
+// // this should equal [ [70, 107, 48, 103, 50, 64, 83], [121, 195, 130, 198, 126, 142, 159], [71, 131, 103, 144, 85, 109, 131], [72, 141, 98, 159, 78, 131, 172] ];
