@@ -111,6 +111,24 @@ matrixMultiplication(testArrayOne, testArrayTwo);
 // this should equal [ [5, 4], [11, 8] ]
 
 // TEST THREE
+let arrayONE = [
+  [1, 2, 3, 4], 
+  [5, 6, 7, 8],
+  [9, 0, 1, 2],
+  [3, 4, 5, 6]
+  ];
+  
+let arrayTwo = [
+  [1, 2, 3, 4], 
+  [5, 6, 7, 8],
+  [9, 0, 1, 2],
+  [3, 4, 5, 6]
+  ];
+
+matrixMultiplication(arrayONE, arrayTwo);
+// this should equal [ [50, 30, 40, 50], [122, 78, 104, 130], [24, 26, 38, 50], [86, 54, 72, 90] ];
+
+// TEST THREE
 // let arrayBruceBanner = [
 //   [3, 1, 4]
 //   ];
