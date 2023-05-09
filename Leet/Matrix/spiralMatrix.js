@@ -30,3 +30,60 @@ ToDo:
 
 */
 
+function spiralMatrix(mat) {
+  
+  // bounds
+  let top = 0;
+  let bottom = mat.length - 1;
+  let left = 0; 
+  let right = mat[0].length - 1;
+  
+  // 0 = left to right; 1 = top to bottom; 2 = right to left; 3 = bottom to top
+  let direction = 0;
+  // storage array
+  let resultArr = [];
+  
+  while(top <= bottom && left <= right) {
+    // moving left to right
+    if (direction == 0) {
+      for (let i = left; i < right; i++) {
+        resultArr.push(mat[top][i]);
+      }
+      top++;
+      direction++;
+    }
+    // moving top to bottom
+    if (direction == 1) {
+      for (let i = top; i < bottom; i++) {
+        resultArr.push(mat[i][right]);
+      }
+      right--;
+      direction++;
+    }
+    // moving right to left
+    if (direction == 2) {
+      for (let i = right; i > left; i--) {
+        resultArr.push(mat[bottom][i])
+      }
+      bottom--;
+      direction++;
+    }
+    // moving bottom to top
+    if (direction == 3) {
+      for (let i = bottom; i > top; i--) {
+        resultArr.push(mat[left][i]);
+      }
+      left++;
+      direction -= 3;
+    }
+  }
+  
+  console.log(resultArr);
+  return resultArr;
+  
+}
+
+// TEST CASES
+
+let firstMat = [[1,2,3],[4,5,6],[7,8,9]];
+spiralMatrix(firstMat); // -> Output: [1,2,3,6,9,8,7,4,5];
