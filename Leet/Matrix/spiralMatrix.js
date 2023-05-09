@@ -46,7 +46,7 @@ function spiralMatrix(mat) {
   while(top <= bottom && left <= right) {
     // moving left to right
     if (direction == 0) {
-      for (let i = left; i < right; i++) {
+      for (let i = left; i <= right; i++) {
         resultArr.push(mat[top][i]);
       }
       top++;
@@ -54,7 +54,7 @@ function spiralMatrix(mat) {
     }
     // moving top to bottom
     if (direction == 1) {
-      for (let i = top; i < bottom; i++) {
+      for (let i = top; i <= bottom; i++) {
         resultArr.push(mat[i][right]);
       }
       right--;
@@ -62,7 +62,7 @@ function spiralMatrix(mat) {
     }
     // moving right to left
     if (direction == 2) {
-      for (let i = right; i > left; i--) {
+      for (let i = right; i >= left; i--) {
         resultArr.push(mat[bottom][i])
       }
       bottom--;
@@ -70,8 +70,8 @@ function spiralMatrix(mat) {
     }
     // moving bottom to top
     if (direction == 3) {
-      for (let i = bottom; i > top; i--) {
-        resultArr.push(mat[left][i]);
+      for (let i = bottom; i >= top; i--) {
+        resultArr.push(mat[i][left]);
       }
       left++;
       direction -= 3;
@@ -85,5 +85,19 @@ function spiralMatrix(mat) {
 
 // TEST CASES
 
-let firstMat = [[1,2,3],[4,5,6],[7,8,9]];
-spiralMatrix(firstMat); // -> Output: [1,2,3,6,9,8,7,4,5];
+let firstMatrix = [
+  [1,2,3],
+  [4,5,6],
+  [7,8,9]
+  ];
+  
+spiralMatrix(firstMatrix); // -> Output: [1,2,3,6,9,8,7,4,5];
+
+
+let secondMatrix = [
+  [1,2,3,4],
+  [5,6,7,8],
+  [9,10,11,12]
+  ];
+  
+spiralMatrix(secondMatrix); // -> Output: [1,2,3,4,8,12,11,10,9,5,6,7]
