@@ -42,23 +42,28 @@ function uniqueOccurrences(arr) {
     
   let isUnique = Object.values(container);
   
-  let uniqueResult = 0;
+  let result = true;
   
     for (let j = 0; j < isUnique.length; j++) {
-      if (j == 0) uniqueResult = isUnique[j];
-      if (j !== 0 && isUnique[j] == uniqueResult) {
-        return false;
-      } else if (j !== 0 && isUnique[j] !== uniqueResult) {
-        return true;
+      for (let k = 0; k < isUnique.length; k++) {
+        if (k == j) continue;
+        else if (isUnique[k] == isUnique[j]) result = false;
+        else if (isUnique[k] !== isUnique[j]) continue;
       }
     }
+    
+    return result;
+    
 };
 
-let firstArr = [1,2,2,1,1,3]
-console.log(uniqueOccurrences(firstArr)) // -> Output: true
+// let firstArr = [1,2,2,1,1,3]
+// console.log(uniqueOccurrences(firstArr)) // -> Output: true
 
-let secondArr = [1,2]
-console.log(uniqueOccurrences(secondArr)) // -> Output: false
+// let secondArr = [1,2]
+// console.log(uniqueOccurrences(secondArr)) // -> Output: false
 
-let thirdArr = [-3,0,1,-3,1,1,1,-3,10,0]
-console.log(uniqueOccurrences(thirdArr)) // -> Output: true
+// let thirdArr = [-3,0,1,-3,1,1,1,-3,10,0]
+// console.log(uniqueOccurrences(thirdArr)) // -> Output: true
+
+let fourthArr = [4,6,4,-8,0,-7,5,7]
+console.log(uniqueOccurrences(fourthArr))
