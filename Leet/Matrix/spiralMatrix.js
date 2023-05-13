@@ -40,6 +40,7 @@ function spiralMatrix(mat) {
   
   // 0 = left to right; 1 = top to bottom; 2 = right to left; 3 = bottom to top
   let direction = 0;
+  
   // storage array
   let resultArr = [];
   
@@ -47,29 +48,27 @@ function spiralMatrix(mat) {
     // moving left to right
     if (direction == 0) {
       for (let i = left; i <= right; i++) {
-        console.log(`left to right | top: ${top} | i: ${i}\n`);
         resultArr.push(mat[top][i]);
       }
       top++;
       direction++;
+      // moving top to bottom
     } else if (direction == 1) {
       for (let i = top; i <= bottom; i++) {
-        
-        console.log(`top to bottom | i: ${i} | right: ${right}\n`);
         resultArr.push(mat[i][right]);
       }
       right--;
       direction++;
+      // moving right to left
     } else if (direction == 2) {
       for (let i = right; i >= left; i--) {
-        console.log(`right to left | bottom: ${bottom} | i: ${i}\n`);
         resultArr.push(mat[bottom][i])
       }
       bottom--;
       direction++;
+      // moving bottom to top
     } else if (direction == 3) {
       for (let i = bottom; i >= top; i--) {
-        console.log(`bottom to top | i: ${i} | left: ${left}\n`);
         resultArr.push(mat[i][left]);
       }
       left++;
