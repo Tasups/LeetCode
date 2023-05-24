@@ -57,33 +57,41 @@ function romanToInt (s) {
   let total = 0;
 
   for (let i = 0; i <  s.length; i++) {
+    let trip = false;
     if (s[i] == "I" && s[i + 1] == "V") {
       total += 4;
       i++;
-      console.log(i);
+      trip = true;
+      console.log("IV to 4: " + i);
     } else if (s[i] == "I" && s[i + 1] == "X") {
       total += 9;
       i++;
-      console.log(i);
+      trip = true;
+      console.log("IX to 9: " + i);
     } else if (s[i] == "X" && s[i + 1] == "L") {
       total += 40;
       i++;
-      console.log(i);
+      trip = true;
+      console.log("XL to 40: " + i);
     } else if (s[i] == "X" && s[i + 1] == "C") {
       total += 90;
       i++;
-      console.log(i);
+      trip = true;
+      console.log("XC to 90: " + i);
     } else if (s[i] == "C" && s[i + 1] == "D") {
       total += 400;
       i++;
-      console.log(i);
+      trip = true;
+      console.log("CD to 400: " + i);
     } else if (s[i] == "C" && s[i + 1] == "M") {
       total += 900;
       i++;
-      console.log(i);
+      trip = true;
+      console.log("CM to 900: " + i);
     } 
     
-    switch (s[i]) {
+    if (!trip) {
+      switch (s[i]) {
       case 'I':
         total++;
         break;
@@ -107,7 +115,10 @@ function romanToInt (s) {
         break;
       default:
         break;
+      }
     }
+    
+    trip = true;
     
   }
   console.log(total);
@@ -117,8 +128,11 @@ function romanToInt (s) {
 
 // TEST CASES
 
-romanToInt("III") // -> Output: 3
+// romanToInt("III") // -> Output: 3
 
-romanToInt("LVIII") // -> Output: 58
+// romanToInt("LVIII") // -> Output: 58
 
 romanToInt("MCMXCIV") // -> Output: 1994
+// romanToInt("M"); // works
+// romanToInt("MC"); // works
+// romanToInt("MCM");

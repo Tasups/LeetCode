@@ -193,7 +193,6 @@ let bestTree = {
 };
 
 for (let i = 0; i < array.length; i++) {
-  console.log("** I = " + i + " **");
   for (let j = 0; j < array[i].length; j++) {
    
     // vertical check for lower indices such as i-1, i-2... up to -1 or out of range
@@ -201,8 +200,6 @@ for (let i = 0; i < array.length; i++) {
     if (i != 0) {
       for (let k = i - 1; k >= 0; k--) {
         let vLTreeToCompare = array[k][j];
-        console.log(`k: ${k} || j: ${j}`);
-        console.log("Tree to compare: " + vLTreeToCompare);
         if (vLTreeToCompare >= array[i][j]) {
           vertLowIndexValue++;
           k = -1;
@@ -254,21 +251,12 @@ for (let i = 0; i < array.length; i++) {
       }
     }
     
-    console.log(`i: ${i} || j: ${j}`);
-    console.log("Prior to removing 0s:")
-    console.log(`verHighVal: ${vertHighIndexValue} || vertLowVal: ${vertLowIndexValue} || horHighVal: ${horHighIndexValue} || horLowVal: ${horLowIndexValue}`);
-    
     if(vertHighIndexValue == 0) vertHighIndexValue = 1;
     if(vertLowIndexValue == 0) vertLowIndexValue = 1;
     if(horHighIndexValue == 0) horHighIndexValue = 1;
     if(horLowIndexValue == 0) horLowIndexValue = 1;
     
-    console.log("After removing 0s:")
-    console.log(`verHighVal: ${vertHighIndexValue} || vertLowVal: ${vertLowIndexValue} || horHighVal: ${horHighIndexValue} || horLowVal: ${horLowIndexValue}`);
-    
     let result = vertHighIndexValue * vertLowIndexValue * horHighIndexValue * horLowIndexValue;
-    console.log("Result: " + result);
-    console.log(" ");
     
     if (result >= bestTree.viewLength) {
       bestTree.iLoc = i;
