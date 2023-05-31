@@ -80,47 +80,34 @@ The area of the n-interesting polygon.
   * @returns 
   * 
   */
+
+
 function solution(n) {
-//  let result = 1;
-//    let recursiveAdditive = (n - 2)
-//   if (n >= 3) {
-//     result = 4 * (n - 2) + 4 * (n - 1) + 1;
-//   } else if (n === 2) {
-//     result = 4;
-//   } else if (n === 1) {
-//     result = 1;
-//   }
-    
-    
-
-// return result;
-}
-
-function recurAdd(x) {
-    let count = x;
     let result = 0;
-    console.log(count)
-    while (count - 2 >= 3) {
-        console.log("result: " + result)
-        result = result + (4 * (x - 2));
-        console.log("count: " + count)
-        count--;
+    if (n >= 3) {
+        let cross = 4 * (n - 1) + 1;
+        let count = n;
+        let total = 0;
+        while(count >= 3) {
+            console.log("count: " + count);
+            let web = 4 * (count - 2);
+            console.log("web: " + web);
+            total = total + web;
+            console.log("total: " + total);
+            count--;
+        }
+        result += total + cross;
+    } else if (n === 2) {
+        result = 5;
+    } else if (n === 1) {
+        result = 1;
     }
-    return result;
-}
     
-// console.log(recurAdd(2)); // -> 0
-console.log(recurAdd(3)); // -> 4
-console.log(recurAdd(4)); // -> 12
-console.log(recurAdd(5)); // -> 24
-console.log(recurAdd(6)); // -> 40
+    return result
+}
 
-// console.log(solution(1)); // -> 1
-// console.log(solution(2)); // -> 5
-// console.log(solution(3)); // -> 13
-// console.log(solution(4)); // -> 25
-// console.log(solution(5)); // -> 41
-
-// let arms = 4(n - 1);
-// let center = 1;
-// let webbing = 
+console.log(solution(1)); // 1
+console.log(solution(2)); // 5
+console.log(solution(3)); // 13
+console.log(solution(4)); // 25
+console.log(solution(5)); // 41
