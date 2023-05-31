@@ -141,19 +141,36 @@ Guaranteed constraints:
 The minimal number of statues that need to be added to existing statues such that it contains every integer size from an interval [L, R] (for some L, R) and no other sizes.
 */
 
+// this solution is close, consider logging the elements to figure out what is going on
 function solution (statues) {
-    const sortedStatues = statues.sort();
-    const revSortStatues = sortedStatues.reverse();
     let toFill = 0;
-    for (let i = 0; i < revSortStatues.length; i++) {
-        if (revSortStatues[i + 1] < revSortStatues.length) {
-            toFill += (revSortStatues[i] - revSortStatues[i + 1]) - 1;
-        }
+    if (statues.length === 1) {
+        console.log(toFill);
+        return toFill;
+    }
+    const sortedStatues = statues.sort(function(a, b){return a - b});
+    const revSortStatues = sortedStatues.reverse();
+    //console.log(revSortStatues)
+    for (let i = 0; i < revSortStatues.length - 1; i++) {
+        //console.log("i: " + i)
+        let result = revSortStatues[i] - revSortStatues[i + 1] - 1;
+        //console.log("result: " + revSortStatues[i] + " - " + revSortStatues[i + 1] + " - 1 = " + result);
+        toFill += result;
     }
     console.log(toFill);
     return toFill;
 }
 
 
-let statOne = [6, 2, 3, 8] // => 3.
-solution(statOne);
+let statOne = [6, 2, 3, 8] 
+solution(statOne); // => 3.
+let statTwo = [8, 1, 0, 4, 7];
+solution(statTwo); // => 4.
+let statThree = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; //*********
+solution(statThree); // => 1.
+let statFour = [10];
+solution(statFour); // => 0.
+let statFive = [4, 2, 7, 18]; //**********
+solution(statFive); // => 13.
+let statSix = [4, 2, 9];
+solution(statSix); // => 5.
