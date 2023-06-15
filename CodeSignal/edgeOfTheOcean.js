@@ -142,35 +142,91 @@ The minimal number of statues that need to be added to existing statues such tha
 */
 
 // this solution is close, consider logging the elements to figure out what is going on
-function solution (statues) {
-    let toFill = 0;
-    if (statues.length === 1) {
-        console.log(toFill);
-        return toFill;
+// function solution (statues) {
+//     let toFill = 0;
+//     if (statues.length === 1) {
+//         console.log(toFill);
+//         return toFill;
+//     }
+//     const sortedStatues = statues.sort(function(a, b){return a - b});
+//     const revSortStatues = sortedStatues.reverse();
+//     //console.log(revSortStatues)
+//     for (let i = 0; i < revSortStatues.length - 1; i++) {
+//         //console.log("i: " + i)
+//         let result = revSortStatues[i] - revSortStatues[i + 1] - 1;
+//         //console.log("result: " + revSortStatues[i] + " - " + revSortStatues[i + 1] + " - 1 = " + result);
+//         toFill += result;
+//     }
+//     console.log(toFill);
+//     return toFill;
+// }
+
+
+// let statOne = [6, 2, 3, 8] 
+// solution(statOne); // => 3.
+// let statTwo = [8, 1, 0, 4, 7];
+// solution(statTwo); // => 4.
+// let statThree = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; //*********
+// solution(statThree); // => 1.
+// let statFour = [10];
+// solution(statFour); // => 0.
+// let statFive = [4, 2, 7, 18]; //**********
+// solution(statFive); // => 13.
+// let statSix = [4, 2, 9];
+// solution(statSix); // => 5.
+
+/*
+Given a sequence of integers as an array, determine whether it is possible to obtain a strictly increasing sequence by removing no more than one element from the array.
+
+Note: sequence a0, a1, ..., an is considered to be a strictly increasing if a0 < a1 < ... < an. Sequence containing only one element is also considered to be strictly increasing.
+
+Example
+
+For sequence = [1, 3, 2, 1], the output should be
+solution(sequence) = false.
+
+There is no one element in this array that can be removed in order to get a strictly increasing sequence.
+
+For sequence = [1, 3, 2], the output should be
+solution(sequence) = true.
+
+You can remove 3 from the array to get the strictly increasing sequence [1, 2]. Alternately, you can remove 2 to get the strictly increasing sequence [1, 3].
+
+Input/Output
+
+[execution time limit] 4 seconds (js)
+
+[memory limit] 1 GB
+
+[input] array.integer sequence
+
+Guaranteed constraints:
+2 ≤ sequence.length ≤ 105,
+-105 ≤ sequence[i] ≤ 105.
+
+[output] boolean
+
+Return true if it is possible to remove one element from the array in order to get a strictly increasing sequence, otherwise return false.
+*/
+
+function solution(sequence) {
+    let array = sequence;
+    let count = 0;
+    if (array[0] >= array[1]) {
+        array = array.slice(1);
+        count++;
     }
-    const sortedStatues = statues.sort(function(a, b){return a - b});
-    const revSortStatues = sortedStatues.reverse();
-    //console.log(revSortStatues)
-    for (let i = 0; i < revSortStatues.length - 1; i++) {
-        //console.log("i: " + i)
-        let result = revSortStatues[i] - revSortStatues[i + 1] - 1;
-        //console.log("result: " + revSortStatues[i] + " - " + revSortStatues[i + 1] + " - 1 = " + result);
-        toFill += result;
+    for(let i = 0; i < array.length - 1; i++) {
+        if (count > 1) return false;
+        if (array[i] >= array[i + 1] && count > 1) {
+            return false;
+        } else if (array[i] >= array[i + 1]) {
+            count++;
+        }
     }
-    console.log(toFill);
-    return toFill;
+    return true;
 }
 
+console.log(solution([1, 3, 2]));
 
-let statOne = [6, 2, 3, 8] 
-solution(statOne); // => 3.
-let statTwo = [8, 1, 0, 4, 7];
-solution(statTwo); // => 4.
-let statThree = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; //*********
-solution(statThree); // => 1.
-let statFour = [10];
-solution(statFour); // => 0.
-let statFive = [4, 2, 7, 18]; //**********
-solution(statFive); // => 13.
-let statSix = [4, 2, 9];
-solution(statSix); // => 5.
+console.log(solution([1, 2, 1, 2]));
